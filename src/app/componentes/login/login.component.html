@@ -1,80 +1,110 @@
 <section
-  class="flex-grow flex justify-center items-center bg-[#141414] p-4 min-h-[calc(100vh-32px)]"
+  class="flex-grow flex justify-center items-center bg-[#07080a] p-4 min-h-[calc(100vh-32px)] relative overflow-hidden"
 >
   <div
-    class="login-split-card animate-fade-up max-w-[900px] w-full flex flex-col md:flex-row bg-[#a89f95] rounded-3xl overflow-hidden shadow-2xl border border-white/5"
+    class="absolute w-[300px] h-[300px] bg-gold/10 rounded-full blur-[120px] -top-12 -left-12 pointer-events-none"
+  ></div>
+  <div
+    class="absolute w-[250px] h-[250px] bg-gold/5 rounded-full blur-[100px] -bottom-12 -right-12 pointer-events-none"
+  ></div>
+
+  <div
+    class="login-split-card animate-fade-up max-w-[850px] w-full flex flex-col md:flex-row glass-effect rounded-3xl overflow-hidden border border-white/15 shadow-2xl relative z-10"
   >
     <div
-      class="w-full md:w-1/2 min-h-[250px] md:min-h-[500px] bg-cover bg-center border-b md:border-b-0 md:border-r border-black/10 relative"
+      class="w-full md:w-1/2 min-h-[280px] md:min-h-[520px] bg-cover bg-center relative"
       style="background-image: url('login_barber.png')"
-    ></div>
-    <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center text-center text-zinc-900">
-      <div class="mb-8">
-        <h2 class="text-4xl font-extrabold tracking-widest text-zinc-950 font-outfit">LOGIN</h2>
-        <p class="text-xs font-bold tracking-widest text-[#3e3831] uppercase mt-1">
-          BIENVENIDO A L'ÉLITE
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[#0a0b0e] via-[#0a0b0e]/40 to-transparent"
+      ></div>
+      <div class="absolute bottom-6 left-6 text-left">
+        <span class="text-gold text-[9px] font-extrabold tracking-[4px] uppercase block mb-1"
+          >HAUTE COUTURE</span
+        >
+        <h3 class="text-white text-xl font-bold tracking-wide uppercase">L'ÉLITE PARIS</h3>
+      </div>
+    </div>
+
+    <div
+      class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-[#0e1015] border-t md:border-t-0 md:border-l border-white/10"
+    >
+      <div class="mb-6 text-center">
+        <h2
+          class="text-3xl font-extrabold tracking-[6px] bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent font-outfit uppercase leading-none mb-2"
+        >
+          L'ÉLITE
+        </h2>
+        <p class="text-[9px] font-extrabold tracking-[3px] text-zinc-400 uppercase">
+          Estilo con distinción
         </p>
       </div>
+
       <form (submit)="handleLogin()">
-        <div class="mb-5 text-left">
-          <label class="block text-xs font-bold text-zinc-800 mb-1.5 uppercase tracking-wider"
-            >Usuario / Email</label
+        <div class="mb-4 text-left">
+          <label class="block text-[9px] font-bold text-gold uppercase tracking-[2px] mb-1.5"
+            ><i class="fa-solid fa-envelope mr-1 text-[8px]"></i> Correo Electrónico</label
           >
           <input
             type="email"
             name="email"
             [ngModel]="email()"
             (ngModelChange)="email.set($event)"
-            class="w-full bg-white border border-black/15 text-zinc-900 px-4 py-2.5 rounded-full font-medium text-sm outline-none focus:border-[#5d5349] transition-all"
+            class="w-full bg-white/5 border border-white/10 text-white placeholder-zinc-500 px-4 py-2.5 rounded-xl font-medium text-xs outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all"
             placeholder="ejemplo@barberia.com"
             required
           />
         </div>
-        <div class="mb-5 text-left">
-          <label class="block text-xs font-bold text-zinc-800 mb-1.5 uppercase tracking-wider"
-            >Contraseña</label
+
+        <div class="mb-4 text-left">
+          <label class="block text-[9px] font-bold text-gold uppercase tracking-[2px] mb-1.5"
+            ><i class="fa-solid fa-lock mr-1 text-[8px]"></i> Contraseña</label
           >
           <input
             type="password"
             name="password"
             [ngModel]="password()"
             (ngModelChange)="password.set($event)"
-            class="w-full bg-white border border-black/15 text-zinc-900 px-4 py-2.5 rounded-full font-medium text-sm outline-none focus:border-[#5d5349] transition-all"
+            class="w-full bg-white/5 border border-white/10 text-white placeholder-zinc-500 px-4 py-2.5 rounded-xl font-medium text-xs outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all"
             placeholder="••••••••"
             required
           />
         </div>
-        <div class="mb-6 text-center">
-          <span class="text-red-700 hover:text-red-950 text-xs font-semibold cursor-pointer"
+
+        <div class="mb-5 text-right">
+          <span
+            class="text-zinc-500 hover:text-gold text-[10px] font-semibold cursor-pointer transition"
             >¿Olvidaste tu contraseña?</span
           >
         </div>
+
         <button
           type="submit"
-          class="bg-[#8a7d72] hover:bg-[#73675d] text-white font-bold py-2.5 px-8 rounded-full text-sm block mx-auto transition-all shadow-md active:scale-95 cursor-pointer"
+          class="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-extrabold py-2.5 px-8 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-yellow-500/20 active:scale-95 cursor-pointer"
         >
-          Ingresar
+          Iniciar Sesión
         </button>
       </form>
-      <div class="mt-8 border-t border-black/10 pt-4">
-        <p class="text-[10px] font-bold text-[#3e3831] uppercase mb-2">
-          Ingresar como cuenta demo:
+
+      <div class="mt-8 border-t border-white/5 pt-4 text-center">
+        <p class="text-[9px] font-bold text-zinc-400 uppercase tracking-[2px] mb-3">
+          Acceso Rápido Demo:
         </p>
-        <div class="flex justify-center gap-2">
+        <div class="flex flex-wrap justify-center gap-2">
           <button
-            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            class="border border-gold/30 hover:border-gold text-gold/80 hover:text-black hover:bg-gold px-3.5 py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-widest transition cursor-pointer"
             (click)="quickLogin('admin@barberia.com', 'admin')"
           >
             Admin
           </button>
           <button
-            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            class="border border-gold/30 hover:border-gold text-gold/80 hover:text-black hover:bg-gold px-3.5 py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-widest transition cursor-pointer"
             (click)="quickLogin('barbero@barberia.com', 'barbero')"
           >
             Barbero
           </button>
           <button
-            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            class="border border-gold/30 hover:border-gold text-gold/80 hover:text-black hover:bg-gold px-3.5 py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-widest transition cursor-pointer"
             (click)="quickLogin('cliente@barberia.com', 'cliente')"
           >
             Cliente
