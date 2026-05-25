@@ -1,0 +1,70 @@
+<div class="animate-fade-up text-xs">
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h3 class="text-sm font-bold text-white uppercase"><i class="fa-solid fa-users text-gold mr-1"></i> Gestión de Usuarios</h3>
+      <p class="text-zinc-500 text-[10px]">Cree, modifique o inhabilite las cuentas del sistema.</p>
+    </div>
+    <button class="bg-gold text-black font-bold px-3 py-1.5 rounded hover:bg-gold-hover transition" (click)="openCreateForm()">Nuevo Usuario</button>
+  </div>
+
+  <div class="mb-4">
+    <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" placeholder="Buscar por nombre o correo..." class="w-full bg-[#161820] border border-white/10 text-white px-3 py-2 rounded outline-none focus:border-gold" />
+  </div>
+
+  <div class="glass-effect rounded-lg overflow-x-auto border border-white/5 mb-6">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-white/5 text-zinc-400 uppercase text-[9px] border-b border-white/10">
+          <th class="p-2.5">ID</th><th class="p-2.5">Nombre completo</th><th class="p-2.5">Usuario</th><th class="p-2.5">Correo</th><th class="p-2.5">Rol</th><th class="p-2.5 text-center">Estado</th><th class="p-2.5 text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of getUsersList(); track u.id) {
+          <tr class="border-b border-white/5 hover:bg-white/1 transition">
+            <td class="p-2.5 font-bold text-zinc-500">#{{ u.id }}</td>
+            <td class="p-2.5 font-bold text-white">{{ u.nombre }}</td>
+            <td class="p-2.5 text-zinc-300">{{ u.username }}</td>
+            <td class="p-2.5 text-zinc-400">{{ u.email }}</td>
+            <td class="p-2.5">
+              <span class="px-2 py-0.5 rounded text-[8px] font-bold" [class]="u.rolId === 1 ? 'bg-gold/15 text-gold' : u.rolId === 2 ? 'bg-purple-500/10 text-purple-300' : 'bg-zinc-500/10 text-zinc-300'">
+                {{ u.rolId === 1 ? 'Admin' : u.rolId === 2 ? 'Barbero' : 'Cliente' }}
+              </span>
+            </td>
+            <td class="p-2.5 text-center">
+              <button class="px-2 py-0.5 rounded text-[8px] font-bold" (click)="toggleUserStatus(u.id)" [class]="u.activo ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'">
+                {{ u.activo ? 'Activo' : 'Inactivo' }}
+              </button>
+            </td>
+            <td class="p-2.5 text-right">
+              <button class="bg-white/5 hover:bg-white/10 text-white px-2 py-1 rounded transition" (click)="openEditForm(u)"><i class="fa-solid fa-pen text-[10px]"></i></button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (editingUser()) {
+    <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-[11000] p-4">
+      <div class="glass-effect rounded-xl p-5 max-w-[400px] w-full border border-white/10 shadow-2xl animate-fade-up">
+        <span class="font-bold text-gold uppercase block mb-4">{{ editingUser()?.id ? 'Editar' : 'Crear' }} Usuario</span>
+        <form (submit)="saveUser()">
+          <div class="mb-3"><label class="block text-[10px] text-zinc-400 mb-1">Nombre Completo</label><input type="text" name="fn" [ngModel]="formNombre()" (ngModelChange)="formNombre.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none" required></div>
+          <div class="mb-3"><label class="block text-[10px] text-zinc-400 mb-1">Usuario</label><input type="text" name="fu" [ngModel]="formUsername()" (ngModelChange)="formUsername.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none" required></div>
+          <div class="mb-3"><label class="block text-[10px] text-zinc-400 mb-1">Correo Electrónico</label><input type="email" name="fe" [ngModel]="formEmail()" (ngModelChange)="formEmail.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none" required></div>
+          <div class="mb-3"><label class="block text-[10px] text-zinc-400 mb-1">Contraseña</label><input type="password" name="fp" [ngModel]="formPassword()" (ngModelChange)="formPassword.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none" required></div>
+          <div class="mb-4">
+            <label class="block text-[10px] text-zinc-400 mb-1">Rol Asignado</label>
+            <select name="fr" [ngModel]="formRolId()" (ngModelChange)="formRolId.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none">
+              <option [value]="1">Administrador</option><option [value]="2">Barbero</option><option [value]="3">Cliente</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="border border-white/15 px-3 py-1.5 rounded" (click)="editingUser.set(null)">Cancelar</button>
+            <button type="submit" class="bg-gold text-black font-bold px-4 py-1.5 rounded hover:bg-gold-hover">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

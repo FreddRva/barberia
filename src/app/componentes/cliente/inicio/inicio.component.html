@@ -1,0 +1,154 @@
+<div class="animate-fade-up">
+  <div
+    class="relative w-full h-[440px] bg-cover bg-center flex items-center justify-center text-center"
+    style="background-image: url('banner_barber_shop.png')"
+  >
+    <div class="absolute inset-0 bg-black/75 z-1"></div>
+    <div class="relative z-2 max-w-[800px] px-6">
+      <div class="text-gold text-xs tracking-[4px] font-bold uppercase mb-2">
+        L'ÉLITE BARBER SHOP
+      </div>
+      <h1
+        class="text-5xl sm:text-6xl font-extrabold tracking-widest text-white uppercase leading-none font-outfit mb-6"
+      >
+        ESTILO CON DISTINCIÓN
+      </h1>
+      <div class="flex justify-center gap-4">
+        <button
+          class="bg-[#a89f95] hover:bg-[#968c82] text-black text-xs font-bold py-2.5 px-6 rounded-full cursor-pointer transition active:scale-95"
+          (click)="onReserve()"
+        >
+          Reservar Ahora
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 bg-[#e5e4e2] text-black border-b border-[#dcdad8]">
+    <div
+      class="flex items-center justify-center gap-4 py-5 px-4 border-b md:border-b-0 md:border-r border-[#dcdad8]"
+    >
+      <i class="fa-regular fa-calendar-days text-xl text-[#5d5349]"></i>
+      <div class="text-left">
+        <span class="font-extrabold text-xs tracking-wider uppercase block">Reserva Fácil</span>
+        <span class="text-[10px] text-zinc-600 font-medium">Agenda tu cita en segundos</span>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-center gap-4 py-5 px-4 border-b md:border-b-0 md:border-r border-[#dcdad8]"
+    >
+      <i class="fa-regular fa-clock text-xl text-[#5d5349]"></i>
+      <div class="text-left">
+        <span class="font-extrabold text-xs tracking-wider uppercase block">Agenda Flexible</span>
+        <span class="text-[10px] text-zinc-600 font-medium">Nos adaptamos a tu tiempo</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-center gap-4 py-5 px-4">
+      <i class="fa-regular fa-thumbs-up text-xl text-[#5d5349]"></i>
+      <div class="text-left">
+        <span class="font-extrabold text-xs tracking-wider uppercase block">Calidad Superior</span>
+        <span class="text-[10px] text-zinc-600 font-medium"
+          >Los mejores profesionales de la ciudad</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="py-12 px-4 bg-[#f7f6f4] text-zinc-900 text-center">
+    <h2 class="text-2xl font-extrabold text-black font-outfit uppercase tracking-wide mb-8">
+      NUESTROS SERVICIOS POPULARES
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-4">
+      <!-- Card 1 -->
+      <div
+        class="flex bg-white rounded-xl overflow-hidden shadow-sm border border-[#e5e4e2] hover:-translate-y-1 hover:shadow-md transition duration-300"
+      >
+        <div
+          class="w-[40%] bg-cover bg-center min-h-[140px]"
+          style="background-image: url('service_classic.png')"
+        ></div>
+        <div class="w-[60%] p-4 flex flex-col justify-between text-left">
+          <div>
+            <h3 class="font-extrabold text-xs text-black mb-1">Corte Clásico</h3>
+            <p class="text-[11px] text-zinc-600 leading-normal mb-2">
+              Corte tradicional de estilo único, con perfilado a tijera y afeitado de contornos con
+              toalla tibia.
+            </p>
+          </div>
+          <button
+            class="bg-black hover:bg-zinc-800 text-white text-[9px] font-bold py-1 px-3 rounded-full self-start transition cursor-pointer active:scale-95"
+            (click)="onReserve()"
+          >
+            Ver más
+          </button>
+        </div>
+      </div>
+      <div
+        class="flex bg-white rounded-xl overflow-hidden shadow-sm border border-[#e5e4e2] hover:-translate-y-1 hover:shadow-md transition duration-300"
+      >
+        <div
+          class="w-[40%] bg-cover bg-center min-h-[140px]"
+          style="background-image: url('service_beard.png')"
+        ></div>
+        <div class="w-[60%] p-4 flex flex-col justify-between text-left">
+          <div>
+            <h3 class="font-extrabold text-xs text-black mb-1">Diseño de Barba</h3>
+            <p class="text-[11px] text-zinc-600 leading-normal mb-2">
+              Diseño y perfilado de barba al estilo vieja escuela, utilizando bálsamos hidratantes y
+              navaja.
+            </p>
+          </div>
+          <button
+            class="bg-black hover:bg-zinc-800 text-white text-[9px] font-bold py-1 px-3 rounded-full self-start transition cursor-pointer active:scale-95"
+            (click)="onReserve()"
+          >
+            Ver más
+          </button>
+        </div>
+      </div>
+      <div
+        class="flex bg-white rounded-xl overflow-hidden shadow-sm border border-[#e5e4e2] hover:-translate-y-1 hover:shadow-md transition duration-300"
+      >
+        <div
+          class="w-[40%] bg-cover bg-center min-h-[140px]"
+          style="background-image: url('service_facial.png')"
+        ></div>
+        <div class="w-[60%] p-4 flex flex-col justify-between text-left">
+          <div>
+            <h3 class="font-extrabold text-xs text-black mb-1">Tratamiento Facial</h3>
+            <p class="text-[11px] text-zinc-600 leading-normal mb-2">
+              Exfoliación profunda y mascarillas de arcilla negra para rejuvenecer y limpiar la piel
+              facial.
+            </p>
+          </div>
+          <button
+            class="bg-black hover:bg-zinc-800 text-white text-[9px] font-bold py-1 px-3 rounded-full self-start transition cursor-pointer active:scale-95"
+            (click)="onReserve()"
+          >
+            Ver más
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="bg-[#0d0e10] text-[#8e9cae] py-6 px-8 border-t border-white/5 text-[11px]">
+    <div class="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto gap-4">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-location-dot text-gold"></i
+        ><span>Av. Larco 456, Miraflores, Lima</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-phone text-gold"></i><span>+51 987 654 321</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-regular fa-clock text-gold"></i><span>Lun - Sáb: 9:00 am - 9:00 pm</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-brands fa-whatsapp text-green-500 text-sm"></i>
+        <a href="https://wa.me/51987654321" target="_blank" class="hover:text-white transition"
+          >+51 987654321</a
+        >
+      </div>
+    </div>
+  </footer>
+</div>

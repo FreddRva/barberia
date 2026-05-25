@@ -1,0 +1,81 @@
+<section class="flex-grow flex flex-col bg-[#0a0b0e]">
+  <nav
+    class="flex justify-between items-center px-8 py-4 bg-black border-b border-white/5 backdrop-blur-md"
+  >
+    <div class="font-extrabold text-xl tracking-wider">
+      <i class="fa-solid fa-scissors text-gold"></i> L'ÉLITE
+    </div>
+    <div class="flex items-center gap-8">
+      <span
+        class="text-xs font-semibold cursor-pointer uppercase transition-all tracking-wider text-zinc-400 hover:text-gold"
+        [class.!text-gold]="clientTab() === 'inicio'"
+        (click)="switchClientTab('inicio')"
+        >Inicio</span
+      >
+      <span
+        class="text-xs font-semibold cursor-pointer uppercase transition-all tracking-wider text-zinc-400 hover:text-gold"
+        [class.!text-gold]="clientTab() === 'barberos'"
+        (click)="switchClientTab('barberos')"
+        >Barberos</span
+      >
+      <span
+        class="text-xs font-semibold cursor-pointer uppercase transition-all tracking-wider text-zinc-400 hover:text-gold"
+        [class.!text-gold]="clientTab() === 'reserva'"
+        (click)="switchClientTab('reserva')"
+        >Reservar</span
+      >
+      <span
+        class="text-xs font-semibold cursor-pointer uppercase transition-all tracking-wider text-zinc-400 hover:text-gold"
+        [class.!text-gold]="clientTab() === 'historial'"
+        (click)="switchClientTab('historial')"
+        >Mis Citas</span
+      >
+      <span
+        class="text-xs font-semibold cursor-pointer uppercase transition-all tracking-wider text-zinc-400 hover:text-gold"
+        [class.!text-gold]="clientTab() === 'perfil'"
+        (click)="switchClientTab('perfil')"
+        >Mi Perfil</span
+      >
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="text-right hidden sm:block">
+        <span class="text-xs font-bold block text-white">{{ dbService.currentUser()?.nombre }}</span>
+      </div>
+      <div
+        class="w-9 h-9 rounded-full border border-gold bg-gold/10 text-gold flex items-center justify-center font-bold text-sm"
+      >
+        {{ getInitials(dbService.currentUser()?.nombre) }}
+      </div>
+      <button
+        class="bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white px-2 py-1.5 rounded cursor-pointer transition"
+        (click)="logout()"
+      >
+        <i class="fa-solid fa-power-off"></i>
+      </button>
+    </div>
+  </nav>
+  <div class="flex-grow w-full">
+    @switch (clientTab()) {
+      @case ('inicio') {
+        <app-client-home (reserveClicked)="switchClientTab('reserva')"></app-client-home>
+      }
+      @case ('barberos') {
+        <app-client-barbers
+          (selectBarberToBook)="handleBarberSelectToBook($event)"
+        ></app-client-barbers>
+      }
+      @case ('reserva') {
+        <app-client-booking
+          [preselectedBarberId]="selectedBarberId()"
+          (alertTriggered)="alertTriggered.emit($event)"
+        ></app-client-booking>
+      }
+      @case ('historial') {
+        <app-client-history (alertTriggered)="alertTriggered.emit($event)"></app-client-history>
+      }
+      @case ('perfil') {
+        <app-client-profile (alertTriggered)="alertTriggered.emit($event)"></app-client-profile>
+      }
+    }
+  </div>
+</section>

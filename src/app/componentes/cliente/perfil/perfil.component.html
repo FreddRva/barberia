@@ -1,0 +1,37 @@
+<div class="max-w-xl mx-auto px-4 py-6 animate-fade-up text-xs">
+    <!-- Puntos de fidelidad badge -->
+    <div class="bg-gold/10 border border-gold/20 rounded-xl p-4 text-center mb-5">
+        <span class="text-[10px] text-zinc-400 block uppercase font-bold tracking-widest mb-1">Tu Saldo Disponible</span>
+        <h2 class="text-3xl font-extrabold text-gold drop-shadow-md">{{ dbService.currentClient()?.puntos_saldo || 0 }} Puntos L'Élite</h2>
+        <p class="text-[10px] text-zinc-500 mt-1">Acumula puntos en cada reserva y canjéalos por fabulosos regalos o servicios libres.</p>
+    </div>
+
+    <!-- Editar perfil card -->
+    <div class="glass-effect rounded-xl p-5">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wide mb-4"><i class="fa-regular fa-id-card text-gold mr-1"></i> Mi Información Personal</h3>
+        
+        <form (submit)="saveProfile()">
+            <div class="mb-4">
+                <label class="block text-[10px] text-zinc-400 font-bold uppercase mb-1">Nombre Completo</label>
+                <input type="text" name="name" [ngModel]="name()" (ngModelChange)="name.set($event)" 
+                       class="w-full bg-[#0a0b0e] border border-white/10 text-white px-3 py-2 rounded outline-none focus:border-gold" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-[10px] text-zinc-400 font-bold uppercase mb-1">Teléfono</label>
+                <input type="text" name="phone" [ngModel]="phone()" (ngModelChange)="phone.set($event)" 
+                       class="w-full bg-[#0a0b0e] border border-white/10 text-white px-3 py-2 rounded outline-none focus:border-gold">
+            </div>
+
+            <div class="mb-5">
+                <label class="block text-[10px] text-zinc-400 font-bold uppercase mb-1">Nueva Contraseña</label>
+                <input type="password" name="password" [ngModel]="password()" (ngModelChange)="password.set($event)" 
+                       class="w-full bg-[#0a0b0e] border border-white/10 text-white px-3 py-2 rounded outline-none focus:border-gold" required>
+            </div>
+
+            <button type="submit" class="w-full bg-[#a89f95] hover:bg-[#8a7d72] text-black font-extrabold py-2 rounded transition active:scale-[0.98]">
+                Guardar Cambios
+            </button>
+        </form>
+    </div>
+</div>

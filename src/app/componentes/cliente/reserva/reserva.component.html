@@ -1,0 +1,124 @@
+<div class="max-w-5xl mx-auto px-4 py-6 animate-fade-up text-xs bg-[#0a0b0e]">
+  <div class="flex justify-between items-center bg-gold/10 border border-gold/20 rounded-xl px-4 py-2.5 mb-6">
+    <div>
+      <h4 class="text-gold font-bold text-xs uppercase"><i class="fa-solid fa-star animate-pulse"></i> Club Fidelidad</h4>
+      <p class="text-zinc-400 text-[10px]">Tu Saldo: <strong class="text-gold">{{ dbService.currentClient()?.puntos_saldo || 0 }} pts</strong>. ¡Sigue acumulando!</p>
+    </div>
+    <div class="flex gap-2">
+      <span class="px-2 py-0.5 rounded text-[10px] font-bold" [class.bg-gold]="step()===1" [class.text-black]="step()===1">1. Servicios</span>
+      <span class="px-2 py-0.5 rounded text-[10px] font-bold" [class.bg-gold]="step()===2" [class.text-black]="step()===2">2. Barber y Fecha</span>
+      <span class="px-2 py-0.5 rounded text-[10px] font-bold" [class.bg-gold]="step()===3" [class.text-black]="step()===3">3. Resumen</span>
+    </div>
+  </div>
+
+  <!-- PASO 1: SERVICIOS -->
+  @if (step() === 1) {
+    <div class="text-center mb-6"><h2 class="text-2xl font-extrabold text-white uppercase tracking-wide">ELIGE EL SERVICIO QUE NECESITAS</h2><div class="w-16 h-0.5 bg-gold mx-auto mt-2"></div></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      @for (svc of dbService.db().servicios; track svc.id) {
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#e5e4e2] hover:-translate-y-1.5 transition duration-300 flex flex-col justify-between text-zinc-950 min-h-[340px]" [class.ring-2]="selectedServices().includes(svc.id)" [class.ring-gold]="selectedServices().includes(svc.id)">
+          <div class="relative h-[160px] bg-cover bg-center" [style.backgroundImage]="'url(' + svc.imagen + ')'">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="w-10 h-10 rounded-full border-2 border-white bg-black text-gold flex items-center justify-center absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 shadow-lg text-sm"><i class="fa-solid" [class.fa-scissors]="svc.id===1 || svc.id===3" [class.fa-user]="svc.id===2" [class.fa-brush]="svc.id===4" [class.fa-spa]="svc.id===5"></i></div>
+          </div>
+          <div class="p-5 pt-8 text-center flex-grow flex flex-col justify-between">
+            <div><h3 class="font-extrabold text-xs text-black uppercase tracking-wider mb-2">{{ svc.nombre }}</h3><p class="text-[11px] text-zinc-500 leading-normal mb-4 font-medium px-2">{{ svc.descripcion }}</p></div>
+            <div>
+              <div class="border-t border-[#e5e4e2] pt-3 flex justify-around text-[10px] font-bold text-zinc-700 mb-4"><span class="flex items-center gap-1"><i class="fa-regular fa-clock"></i> {{ svc.duracion_minutos }} min</span><span class="text-zinc-950 font-extrabold text-xs">S/ {{ svc.precio.toFixed(2) }}</span></div>
+              <button class="w-full font-extrabold py-2 rounded-xl transition cursor-pointer active:scale-95 text-xs text-center uppercase tracking-wider" [class]="selectedServices().includes(svc.id) ? 'bg-[#a89f95] text-black border border-black/15' : 'bg-black text-white hover:bg-zinc-800'" (click)="toggleService(svc.id)">{{ selectedServices().includes(svc.id) ? 'Seleccionado' : 'Reservar' }}</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="flex justify-end"><button class="bg-[#a89f95] hover:bg-[#8a7d72] text-black font-extrabold py-2 px-6 rounded-xl text-xs uppercase tracking-wider active:scale-95 transition" (click)="nextStep(2)">Continuar Reserva</button></div>
+  }
+
+  <!-- PASO 2: BARBERO Y HORARIO -->
+  @if (step() === 2) {
+    <div class="glass-effect rounded-xl p-5">
+      <h3 class="text-sm font-bold text-white uppercase mb-3">Paso 2: Barbero y Horario</h3>
+      @if (selectedBarberId()) {
+        <div class="flex items-center justify-between bg-white/5 border border-gold/30 rounded-xl p-4 mb-5 animate-fade-in">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-gold bg-gold/10 text-gold flex items-center justify-center font-extrabold text-xs uppercase"><i class="fa-solid fa-user-check"></i></div>
+            <div><span class="text-[9px] text-gold uppercase tracking-widest font-semibold block leading-none mb-1">Barbero Seleccionado</span><h4 class="font-extrabold text-white text-sm uppercase leading-tight">{{ getBarberRealName(selectedBarberId()!) }}</h4></div>
+          </div>
+          <button class="bg-white/5 hover:bg-red-950/30 text-zinc-300 hover:text-red-400 border border-white/10 hover:border-red-500/20 px-3 py-1.5 rounded transition text-[9px] uppercase font-bold" (click)="selectedBarberId.set(null); selectedTime.set('')">Cambiar Barbero</button>
+        </div>
+      } @else {
+        <p class="text-[10px] text-zinc-400 mb-2 font-bold uppercase"><i class="fa-solid fa-users text-gold"></i> Elige un barbero:</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5 animate-fade-in">
+          @for (b of dbService.db().barberos; track b.id) {
+            <div class="bg-white/3 border border-white/10 rounded-lg p-3 text-center cursor-pointer hover:border-gold transition" [class.!border-gold]="selectedBarberId() === b.id" (click)="selectBarber(b.id)">
+              <span class="font-bold block text-white text-xs">{{ getBarberRealName(b.id) }}</span><span class="text-[10px] text-gold font-medium block mt-0.5">{{ b.especialidad }}</span>
+            </div>
+          }
+        </div>
+      }
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div><label class="block text-[10px] text-zinc-400 mb-1">Fecha de Reserva:</label><input type="date" name="bookingDate" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event); selectedTime.set('')" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded" [min]="tomorrow"></div>
+        <div>
+          <label class="block text-[10px] text-zinc-400 mb-1">Horarios Disponibles:</label>
+          @if (!selectedBarberId()) { <p class="text-zinc-500 italic text-[10px] mt-2">Seleccione un barbero primero...</p> } 
+          @else {
+            <div class="grid grid-cols-3 gap-1.5 max-h-[100px] overflow-y-auto">
+              @for (slot of getBarberTimeSlots(selectedBarberId()!, selectedDate()); track slot.time) {
+                <button class="p-1 rounded text-[9px] border border-white/5 transition" [class.bg-gold]="selectedTime() === slot.time" [class.text-black]="selectedTime() === slot.time" [disabled]="slot.disabled" [class.opacity-30]="slot.disabled" (click)="selectedTime.set(slot.time)">{{ slot.time }}</button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      <div class="flex justify-between"><button class="border border-white/20 px-3 py-1 rounded" (click)="step.set(1)">Atrás</button><button class="bg-[#a89f95] text-black font-bold px-4 py-1 rounded" (click)="nextStep(3)">Continuar</button></div>
+    </div>
+  }
+
+  <!-- PASO 3: RESUMEN Y PAGO -->
+  @if (step() === 3) {
+    <div class="glass-effect rounded-xl p-5">
+      <h3 class="text-sm font-bold text-white uppercase mb-3">Paso 3: Confirmación de Cita</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-black/40 border border-white/5 rounded-lg p-3">
+          <span class="font-bold text-gold block mb-2">Resumen del Pedido:</span>
+          <div class="flex flex-col gap-1 mb-2">
+            @for (id of selectedServices(); track id) {
+              @if (dbService.db().servicios; as list) {
+                @if (list | commonFind: id; as svc) { <div class="flex justify-between text-[10px] text-zinc-300"><span>• {{ svc.nombre }}</span><strong>S/ {{ svc.precio.toFixed(2) }}</strong></div> }
+              }
+            }
+          </div>
+          <div class="border-t border-white/10 pt-2 flex justify-between font-bold text-white"><span>Total:</span><span>S/ {{ getBookingSumTotal().toFixed(2) }}</span></div>
+          <div class="flex justify-between text-emerald-400 font-bold mt-1 text-[10px]"><span>Adelanto (20%):</span><span>S/ {{ (getBookingSumTotal() * 0.2).toFixed(2) }}</span></div>
+        </div>
+        <div>
+          <label class="block text-zinc-400 text-[10px] mb-2">Método de Pago del Adelanto:</label>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            @for (m of ['Efectivo', 'Tarjeta', 'Transferencia', 'Yape']; track m) {
+              <button class="p-2 bg-white/5 rounded border border-white/5 text-center text-[10px]" [class.border-gold]="paymentMethod() === m" [class.text-gold]="paymentMethod() === m" (click)="paymentMethod.set(m)">{{ m }}</button>
+            }
+          </div>
+          <button class="w-full bg-gold hover:bg-gold-hover text-black font-extrabold py-2 rounded text-xs" (click)="confirmBooking()">PAGAR Y CONFIRMAR CITA</button>
+        </div>
+      </div>
+      <button class="border border-white/20 px-3 py-1 rounded" (click)="step.set(2)">Atrás</button>
+    </div>
+  }
+
+  <!-- COMPROBANTE TÉRMICO -->
+  @if (receiptData()) {
+    <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-[11000] p-4">
+      <div class="receipt-thermal rounded-lg p-5 max-w-[320px] w-full text-black shadow-2xl animate-fade-up">
+        <h4 class="text-center font-extrabold text-xs uppercase tracking-widest border-b border-dashed border-black pb-2">L'ÉLITE BARBER SHOP</h4>
+        <div class="my-3 text-[10px] leading-relaxed">
+          <p><strong>Comprobante:</strong> {{ receiptData().comprobante }}</p>
+          <p><strong>Fecha Programada:</strong> {{ receiptData().cita.fecha_programada }} - {{ receiptData().cita.hora_programada }}</p>
+          <p><strong>Barbero:</strong> {{ getBarberRealName(receiptData().cita.barberoId) }}</p>
+          <p><strong>Adelanto Pagado:</strong> S/ {{ receiptData().adelanto.toFixed(2) }} ({{ receiptData().cita.metodo_pago }})</p>
+          <p><strong>Puntos Ganados:</strong> +{{ receiptData().puntosGanados }} pts</p>
+        </div>
+        <button class="w-full bg-black text-white py-1.5 rounded font-bold text-[10px]" (click)="closeReceipt()">Entendido</button>
+      </div>
+    </div>
+  }
+</div>

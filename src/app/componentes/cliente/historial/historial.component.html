@@ -1,0 +1,70 @@
+<div class="max-w-4xl mx-auto px-4 py-6 animate-fade-up text-xs">
+    <div class="glass-effect rounded-xl p-5">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wide mb-2"><i class="fa-solid fa-clock-rotate-left text-gold mr-1"></i> Mis Citas Agendadas</h3>
+        <p class="text-zinc-400 text-[10px] mb-4">Verifique el estado de su atención programada y cancele reservas de ser necesario.</p>
+
+        <div class="w-full overflow-x-auto rounded-lg border border-white/10">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-white/5 text-zinc-400 uppercase font-semibold text-[9px] tracking-wider border-b border-white/10">
+                        <th class="py-2.5 px-3">ID</th>
+                        <th class="py-2.5 px-3">Fecha & Hora</th>
+                        <th class="py-2.5 px-3">Barbero</th>
+                        <th class="py-2.5 px-3">Servicios</th>
+                        <th class="py-2.5 px-3">Adelanto / Total</th>
+                        <th class="py-2.5 px-3 text-center">Estado</th>
+                        <th class="py-2.5 px-3 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (cita of getClientAppointments(); track cita.id) {
+                        <tr class="border-b border-white/5 hover:bg-white/2 transition">
+                            <td class="py-3 px-3 font-bold text-zinc-400">#{{ cita.id }}</td>
+                            <td class="py-3 px-3">
+                                <span class="font-bold block text-white">{{ cita.fecha_programada }}</span>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">{{ cita.hora_programada }}</span>
+                            </td>
+                            <td class="py-3 px-3 font-semibold text-white">{{ getBarberRealName(cita.barberoId) }}</td>
+                            <td class="py-3 px-3 max-w-[150px] truncate">
+                                @for (id of cita.serviciosIds; track id) {
+                                    @if (dbService.db().servicios; as list) {
+                                        @if (list | commonFind: id; as svc) {
+                                            <span class="bg-white/5 border border-white/10 text-zinc-300 text-[9px] px-1.5 py-0.5 rounded mr-1 inline-block">{{ svc.nombre }}</span>
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td class="py-3 px-3">
+                                <span class="font-bold text-white block">S/ {{ cita.total.toFixed(2) }}</span>
+                                <span class="text-[9px] text-emerald-400 block">Adelanto: S/ {{ cita.monto_adelanto.toFixed(2) }}</span>
+                            </td>
+                            <td class="py-3 px-3 text-center">
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold inline-block"
+                                      [class]="cita.estado_actual === 'Confirmada' ? 'bg-emerald-500/20 text-emerald-300' :
+                                               cita.estado_actual === 'Pendiente' ? 'bg-blue-500/20 text-blue-300' :
+                                               cita.estado_actual === 'Cancelada' ? 'bg-red-500/20 text-red-300' :
+                                               'bg-purple-500/20 text-purple-300'">
+                                    {{ cita.estado_actual }}
+                                </span>
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                @if (cita.estado_actual === 'Confirmada' || cita.estado_actual === 'Pendiente') {
+                                    <button class="bg-red-900/30 hover:bg-red-950/40 text-red-300 border border-red-700/30 text-[9px] font-bold px-2 py-1 rounded transition cursor-pointer"
+                                            (click)="cancelAppointment(cita.id)">
+                                        Cancelar
+                                    </button>
+                                } @else {
+                                    <span class="text-zinc-500 italic text-[9px]">Sin acciones</span>
+                                }
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="7" class="text-center py-6 text-zinc-500 italic">Aún no tiene ninguna cita agendada en el sistema.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="animate-fade-up text-xs">
+  <div class="mb-5">
+    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Dashboard Principal</h2>
+    <p class="text-zinc-500 text-[10px]">
+      Resumen gerencial de ventas, citas activas y existencias de almacén en tiempo real.
+    </p>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div
+      class="glass-effect rounded-xl p-4 flex flex-col justify-between min-h-[90px] border-l-4 border-l-gold"
+    >
+      <span class="text-zinc-400 font-bold uppercase text-[9px] tracking-wider block"
+        >Ingresos de Caja</span
+      >
+      <h3 class="text-xl font-extrabold text-white mt-1">S/ {{ getTotalRevenue().toFixed(2) }}</h3>
+      <span class="text-[9px] text-zinc-500 mt-2 block">100% Recaudado vía pasarelas</span>
+    </div>
+    <div
+      class="glass-effect rounded-xl p-4 flex flex-col justify-between min-h-[90px] border-l-4 border-l-blue-400"
+    >
+      <span class="text-zinc-400 font-bold uppercase text-[9px] tracking-wider block"
+        >Citas Activas</span
+      >
+      <h3 class="text-xl font-extrabold text-white mt-1">
+        {{ getActiveAppointmentsCount() }} Programadas
+      </h3>
+      <span class="text-[9px] text-zinc-500 mt-2 block">Por atender esta semana</span>
+    </div>
+    <div
+      class="glass-effect rounded-xl p-4 flex flex-col justify-between min-h-[90px] border-l-4 border-l-red-400"
+    >
+      <span class="text-zinc-400 font-bold uppercase text-[9px] tracking-wider block"
+        >Stock Crítico</span
+      >
+      <h3
+        class="text-xl font-extrabold text-white mt-1"
+        [class.text-red-400]="getLowStockCount() > 0"
+      >
+        {{ getLowStockCount() }} Artículos
+      </h3>
+      <span class="text-[9px] text-zinc-500 mt-2 block">Requieren reabastecimiento</span>
+    </div>
+    <div
+      class="glass-effect rounded-xl p-4 flex flex-col justify-between min-h-[90px] border-l-4 border-l-purple-400"
+    >
+      <span class="text-zinc-400 font-bold uppercase text-[9px] tracking-wider block"
+        >Barbero Estrella</span
+      >
+      <h3 class="text-xl font-extrabold text-white mt-1">{{ getTopBarberName() }}</h3>
+      <span class="text-[9px] text-zinc-500 mt-2 block">Líder en volumen de atención</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="glass-effect rounded-xl p-4">
+      <span class="font-bold text-white uppercase text-[10px] block mb-4"
+        >Curva de Ventas Diarias (S/)</span
+      >
+      <div
+        class="h-40 flex items-center justify-center bg-black/40 border border-white/5 rounded-lg relative overflow-hidden"
+      >
+        <svg
+          viewBox="0 0 100 35"
+          class="w-full h-full text-gold fill-none stroke-current"
+          stroke-width="0.8"
+        >
+          <path
+            d="M 5,30 L 20,25 L 35,28 L 50,15 L 65,18 L 80,8 L 95,5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M 5,30 L 20,25 L 35,28 L 50,15 L 65,18 L 80,8 L 95,5 L 95,35 L 5,35 Z"
+            fill="rgba(212, 175, 55, 0.05)"
+            stroke="none"
+          />
+        </svg>
+        <div
+          class="absolute bottom-2 left-0 right-0 flex justify-between px-4 text-[8px] text-zinc-500"
+        >
+          <span>Lunes</span><span>Miércoles</span><span>Viernes</span><span>Domingo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-effect rounded-xl p-4">
+      <span class="font-bold text-white uppercase text-[10px] block mb-4"
+        >Volumen de Atención por Barbero</span
+      >
+      <div
+        class="h-40 flex items-end justify-around bg-black/40 border border-white/5 rounded-lg p-4"
+      >
+        @for (b of dbService.db().barberos; track b.id) {
+          <div class="flex flex-col items-center gap-1.5 w-1/4">
+            <div
+              class="w-6 bg-gradient-to-t from-gold/50 to-gold rounded-t relative transition-all duration-300"
+              [style.height.%]="b.id === 1 ? 80 : b.id === 2 ? 65 : 45"
+            >
+              <span
+                class="absolute -top-4 left-0 right-0 text-center text-[8px] font-bold text-white"
+              >
+                {{ b.id === 1 ? '18' : b.id === 2 ? '15' : '10' }}
+              </span>
+            </div>
+            <span class="text-[8px] text-zinc-400 block truncate max-w-full">
+              {{ b.id === 1 ? 'Carlos' : b.id === 2 ? 'Enzo' : 'Lucas' }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

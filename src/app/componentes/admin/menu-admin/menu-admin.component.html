@@ -1,0 +1,71 @@
+<div class="flex-grow flex bg-[#0a0b0e] text-xs min-h-[calc(100vh-32px)]">
+  <!-- Sidebar Navigation -->
+  <aside class="w-64 bg-[#0d0e12] border-r border-white/5 flex flex-col justify-between p-5">
+    <div>
+      <!-- Branding -->
+      <div class="flex items-center gap-2 font-extrabold text-lg text-white mb-6 border-b border-white/5 pb-4">
+        <i class="fa-solid fa-scissors text-gold"></i> L'ÉLITE ADMIN
+      </div>
+
+      <!-- Profile Info -->
+      <div class="flex items-center gap-2 mb-6 bg-white/3 border border-white/5 p-2 rounded-lg">
+        <div class="w-8 h-8 rounded bg-gold/10 text-gold flex items-center justify-center font-bold text-xs">
+          {{ getInitials(dbService.currentUser()?.nombre) }}
+        </div>
+        <div class="truncate">
+          <span class="font-bold text-white block truncate">{{ dbService.currentUser()?.nombre }}</span>
+          <span class="text-[9px] text-gold uppercase font-semibold">
+            {{ dbService.currentUser()?.rolId === 1 ? 'Administrador' : 'Empleado/Barbero' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex flex-col gap-1.5">
+        <button [class]="getMenuClass('dashboard')" (click)="switchAdminTab('dashboard')">
+          <i class="fa-solid fa-chart-line w-4"></i> Dashboard
+        </button>
+        @if (dbService.currentUser()?.rolId === 1) {
+          <button [class]="getMenuClass('users')" (click)="switchAdminTab('users')">
+            <i class="fa-solid fa-users w-4"></i> Usuarios & Roles
+          </button>
+          <button [class]="getMenuClass('barbers')" (click)="switchAdminTab('barbers')">
+            <i class="fa-solid fa-id-card w-4"></i> Barberos
+          </button>
+          <button [class]="getMenuClass('services')" (click)="switchAdminTab('services')">
+            <i class="fa-solid fa-list w-4"></i> Cortes & Servicios
+          </button>
+        }
+        <button [class]="getMenuClass('inventory')" (click)="switchAdminTab('inventory')">
+          <i class="fa-solid fa-boxes-stacked w-4"></i> Inventario & Insumos
+        </button>
+        @if (dbService.currentUser()?.rolId === 1) {
+          <button [class]="getMenuClass('purchases')" (click)="switchAdminTab('purchases')">
+            <i class="fa-solid fa-truck-ramp-box w-4"></i> Compras & Proveedores
+          </button>
+          <button [class]="getMenuClass('reports')" (click)="switchAdminTab('reports')">
+            <i class="fa-solid fa-file-invoice w-4"></i> Reportes
+          </button>
+        }
+      </nav>
+    </div>
+
+    <button class="flex items-center justify-center gap-2 bg-white/5 hover:bg-red-950/20 text-zinc-400 hover:text-red-300 py-2 rounded border border-white/5 transition cursor-pointer"
+            (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+    </button>
+  </aside>
+
+  <!-- Admin Work Area Content -->
+  <main class="flex-grow p-6 bg-[#0a0b0e] overflow-y-auto">
+    @switch (adminTab()) {
+      @case ('dashboard') { <app-admin-dashboard></app-admin-dashboard> }
+      @case ('users') { <app-admin-users (alertTriggered)="alertTriggered.emit($event)"></app-admin-users> }
+      @case ('barbers') { <app-admin-barbers (alertTriggered)="alertTriggered.emit($event)"></app-admin-barbers> }
+      @case ('services') { <app-admin-services (alertTriggered)="alertTriggered.emit($event)"></app-admin-services> }
+      @case ('inventory') { <app-admin-inventory (alertTriggered)="alertTriggered.emit($event)"></app-admin-inventory> }
+      @case ('purchases') { <app-admin-purchases (alertTriggered)="alertTriggered.emit($event)"></app-admin-purchases> }
+      @case ('reports') { <app-admin-reports></app-admin-reports> }
+    }
+  </main>
+</div>

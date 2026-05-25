@@ -1,3 +1,107 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   GLOBAL APP STYLES & TAILWIND V4 CONFIGURATION
+   ========================================================================== */
 
 @import 'tailwindcss';
+
+@theme {
+  /* Brand luxury theme colors matching screenshots */
+  --color-gold: #d4af37;
+  --color-gold-hover: #f3c63f;
+  --color-gold-glow: rgba(212, 175, 55, 0.2);
+  --color-brand-beige: #a89f95;
+  --color-brand-brown: #8a7d72;
+  --color-brand-dark: #0a0b0e;
+  --color-brand-card: rgba(20, 23, 31, 0.65);
+  --color-brand-card-hover: rgba(30, 35, 47, 0.8);
+  
+  /* Semantic Status Colors */
+  --color-status-pending: #3b82f6;
+  --color-status-confirmed: #10b981;
+  --color-status-cancelled: #ef4444;
+  --color-status-completed: #8b5cf6;
+  
+  /* Font Family override */
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+  
+  /* Transition speed */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom styling defaults */
+body {
+    background-color: #0a0b0e;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 45%);
+    background-attachment: fixed;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0a0b0e;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+
+/* Custom Receipt Styling (Print Simulation) */
+.receipt-thermal {
+    background: #ffffff;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+    position: relative;
+}
+.receipt-thermal::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -8px;
+    height: 8px;
+    background-image: linear-gradient(135deg, #fff 25%, transparent 25%), linear-gradient(225deg, #fff 25%, transparent 25%);
+    background-size: 16px 16px;
+    background-position: 0 0;
+}
+
+/* Dynamic slide animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fade-up {
+    animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Tailwind Glassmorphism utility matching layout requirements */
+.glass-effect {
+    background: rgba(20, 23, 31, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-effect:hover {
+    border-color: rgba(212, 175, 55, 0.25);
+    background: rgba(30, 35, 47, 0.8);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
+}

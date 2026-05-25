@@ -1,0 +1,109 @@
+<div class="animate-fade-up text-xs bg-[#0a0b0e] min-h-screen">
+  <div
+    class="relative w-full h-[240px] bg-cover bg-center flex items-center justify-between px-8 border-b border-white/5"
+    style="
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.95)), url('banner_barber_shop.png');
+    "
+  >
+    <div class="flex items-center gap-6 max-w-2xl">
+      <i class="fa-solid fa-scissors text-5xl text-gold animate-bounce"></i>
+      <div class="text-left">
+        <h1
+          class="text-4xl font-extrabold tracking-widest text-white uppercase leading-none font-outfit mb-2"
+        >
+          NUESTROS BARBEROS
+        </h1>
+        <p class="text-zinc-400 text-xs font-semibold leading-relaxed">
+          Profesionales con estilo, pasión y experiencia para que luzcas tu mejor versión.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4"
+  >
+    <span
+      class="font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2"
+    >
+      <i class="fa-solid fa-users text-gold"></i> CONOCE A NUESTROS EXPERTOS
+    </span>
+    <div class="flex items-center gap-3 w-full md:w-auto">
+      <input
+        type="text"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Buscar barbero..."
+        class="bg-[#12131a] border border-white/10 text-white px-3 py-1.5 rounded-full w-full md:w-60 outline-none focus:border-gold"
+      />
+      <select
+        [ngModel]="specFilter()"
+        (ngModelChange)="specFilter.set($event)"
+        class="bg-[#12131a] border border-white/10 text-white px-3 py-1.5 rounded-full outline-none focus:border-gold cursor-pointer"
+      >
+        <option value="Todas">Especialidad</option>
+        <option value="Cortes">Cortes Clásicos</option>
+        <option value="Barba">Barba y Afeitados</option>
+        <option value="Colorimetría">Estilista y Color</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 pb-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (b of getBarbers(); track b.id) {
+        <div
+          class="glass-effect rounded-2xl overflow-hidden hover:-translate-y-1.5 transition-all duration-300 border border-white/5 hover:border-gold/30"
+        >
+          <div
+            class="relative h-[220px] bg-cover bg-center"
+            [style.backgroundImage]="'url(' + getBarberImage(b.id) + ')'"
+          >
+            <span
+              class="absolute top-4 left-4 bg-black/80 border border-gold/45 text-gold text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"
+            >
+              {{ getBarberExp(b.id) }} AÑOS EXP.
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+          </div>
+          <div class="p-5 text-left flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-sm text-white mb-0.5 tracking-wide">
+                {{ getBarberRealName(b.usuarioId) }}
+              </h3>
+              <span
+                class="text-[10px] text-zinc-400 block font-medium mb-3 uppercase tracking-wider"
+                >{{ getBarberTitle(b.id) }}</span
+              >
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                @for (spec of getBarberSpecs(b.especialidad); track spec) {
+                  <span
+                    class="bg-white/5 border border-white/10 text-zinc-300 text-[8px] font-semibold px-2 py-0.5 rounded-full"
+                  >
+                    {{ spec }}
+                  </span>
+                }
+              </div>
+            </div>
+            <div class="border-t border-white/5 pt-4 flex flex-col gap-3">
+              <span class="text-gold text-[10px] font-bold flex items-center gap-1">
+                <i class="fa-solid fa-star"></i> {{ getBarberRating(b.id) }}
+              </span>
+              <button
+                class="bg-[#a89f95] hover:bg-[#8a7d72] text-black font-extrabold py-2 w-full rounded-xl transition cursor-pointer active:scale-95 text-center uppercase tracking-wider text-[10px]"
+                (click)="quickBook(b.id)"
+              >
+                RESERVAR CON ÉL
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-span-full text-center py-12 text-zinc-500 italic">
+          No se encontraron barberos activos que coincidan con los filtros.
+        </div>
+      }
+    </div>
+  </div>
+</div>

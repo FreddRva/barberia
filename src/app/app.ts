@@ -1,12 +1,50 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Subcomponentes Modulares en Español
+import { LoginComponent } from './componentes/login/login.component';
+import { ClientLayoutComponent } from './componentes/cliente/menu-cliente/menu-cliente.component';
+import { AdminLayoutComponent } from './componentes/admin/menu-admin/menu-admin.component';
+import { DbService } from './servicios/db.servicio';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    CommonModule,
+    LoginComponent,
+    ClientLayoutComponent,
+    AdminLayoutComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('barberia');
+  public dbService = inject(DbService);
+
+  // Router interno de la SPA
+  public activeView = signal<string>('login');
+
+  // Alertas flotantes
+  public alertState = signal<any>({
+    message: '',
+    type: 'success',
+    active: false
+  });
+
+  public triggerAlert(alert: any) {
+    this.alertState.set({
+      message: alert.message,
+      type: alert.type || 'success',
+      active: true
+    });
+
+    setTimeout(() => {
+      this.alertState.update((state: any) => ({ ...state, active: false }));
+    }, 3500);
+  }
+
+  public handleViewChange(view: string) {
+    this.activeView.set(view);
+  }
 }

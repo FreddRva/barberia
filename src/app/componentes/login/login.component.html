@@ -1,0 +1,86 @@
+<section
+  class="flex-grow flex justify-center items-center bg-[#141414] p-4 min-h-[calc(100vh-32px)]"
+>
+  <div
+    class="login-split-card animate-fade-up max-w-[900px] w-full flex flex-col md:flex-row bg-[#a89f95] rounded-3xl overflow-hidden shadow-2xl border border-white/5"
+  >
+    <div
+      class="w-full md:w-1/2 min-h-[250px] md:min-h-[500px] bg-cover bg-center border-b md:border-b-0 md:border-r border-black/10 relative"
+      style="background-image: url('login_barber.png')"
+    ></div>
+    <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center text-center text-zinc-900">
+      <div class="mb-8">
+        <h2 class="text-4xl font-extrabold tracking-widest text-zinc-950 font-outfit">LOGIN</h2>
+        <p class="text-xs font-bold tracking-widest text-[#3e3831] uppercase mt-1">
+          BIENVENIDO A L'ÉLITE
+        </p>
+      </div>
+      <form (submit)="handleLogin()">
+        <div class="mb-5 text-left">
+          <label class="block text-xs font-bold text-zinc-800 mb-1.5 uppercase tracking-wider"
+            >Usuario / Email</label
+          >
+          <input
+            type="email"
+            name="email"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            class="w-full bg-white border border-black/15 text-zinc-900 px-4 py-2.5 rounded-full font-medium text-sm outline-none focus:border-[#5d5349] transition-all"
+            placeholder="ejemplo@barberia.com"
+            required
+          />
+        </div>
+        <div class="mb-5 text-left">
+          <label class="block text-xs font-bold text-zinc-800 mb-1.5 uppercase tracking-wider"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            name="password"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            class="w-full bg-white border border-black/15 text-zinc-900 px-4 py-2.5 rounded-full font-medium text-sm outline-none focus:border-[#5d5349] transition-all"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <div class="mb-6 text-center">
+          <span class="text-red-700 hover:text-red-950 text-xs font-semibold cursor-pointer"
+            >¿Olvidaste tu contraseña?</span
+          >
+        </div>
+        <button
+          type="submit"
+          class="bg-[#8a7d72] hover:bg-[#73675d] text-white font-bold py-2.5 px-8 rounded-full text-sm block mx-auto transition-all shadow-md active:scale-95 cursor-pointer"
+        >
+          Ingresar
+        </button>
+      </form>
+      <div class="mt-8 border-t border-black/10 pt-4">
+        <p class="text-[10px] font-bold text-[#3e3831] uppercase mb-2">
+          Ingresar como cuenta demo:
+        </p>
+        <div class="flex justify-center gap-2">
+          <button
+            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            (click)="quickLogin('admin@barberia.com', 'admin')"
+          >
+            Admin
+          </button>
+          <button
+            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            (click)="quickLogin('barbero@barberia.com', 'barbero')"
+          >
+            Barbero
+          </button>
+          <button
+            class="bg-black/5 hover:bg-black/10 border border-black/15 text-[#2b2722] text-[10px] font-bold py-1 px-3 rounded-xl transition cursor-pointer"
+            (click)="quickLogin('cliente@barberia.com', 'cliente')"
+          >
+            Cliente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

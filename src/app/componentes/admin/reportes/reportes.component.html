@@ -1,0 +1,38 @@
+<div class="animate-fade-up text-xs max-w-xl mx-auto">
+    <div class="glass-effect rounded-xl p-5">
+        <h3 class="text-sm font-bold text-white uppercase mb-2"><i class="fa-solid fa-file-invoice-dollar text-gold mr-1"></i> Reportes y Auditoría</h3>
+        <p class="text-zinc-500 text-[10px] mb-5">Exporte reportes consolidados del rendimiento de la barbería.</p>
+
+        <form (submit)="$event.preventDefault()">
+            <div class="mb-3">
+                <label class="block text-[10px] text-zinc-400 font-bold uppercase mb-1">Tipo de Reporte</label>
+                <select name="rt" [ngModel]="reportType()" (ngModelChange)="reportType.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none">
+                    <option value="ventas">Reporte de Caja y Ventas</option>
+                    <option value="citas">Reporte de Citas y Reservas</option>
+                    <option value="inventario">Reporte de Inventario Crítico</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-5">
+                <div>
+                    <label class="block text-[10px] text-zinc-400 mb-1">Fecha de Inicio</label>
+                    <input type="date" name="sd" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-zinc-400 mb-1">Fecha Fin</label>
+                    <input type="date" name="ed" [ngModel]="endDate()" (ngModelChange)="endDate.set($event)" class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none">
+                </div>
+            </div>
+
+            <span class="font-bold text-white uppercase text-[9px] block mb-3 border-b border-white/5 pb-1">Seleccionar Formato de Exportación:</span>
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" class="bg-emerald-950/20 hover:bg-emerald-900/40 text-emerald-300 border border-emerald-800/20 py-2.5 rounded font-bold transition flex items-center justify-center gap-2" (click)="exportReport('excel')">
+                    <i class="fa-solid fa-file-excel"></i> Exportar a Excel
+                </button>
+                <button type="button" class="bg-red-950/20 hover:bg-red-900/40 text-red-300 border border-red-800/20 py-2.5 rounded font-bold transition flex items-center justify-center gap-2" (click)="exportReport('pdf')">
+                    <i class="fa-solid fa-file-pdf"></i> Exportar a PDF
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

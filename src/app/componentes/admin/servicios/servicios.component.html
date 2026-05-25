@@ -1,0 +1,155 @@
+<div class="animate-fade-up text-xs">
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h3 class="text-sm font-bold text-white uppercase">
+        <i class="fa-solid fa-scissors text-gold mr-1"></i> Catálogo de Servicios
+      </h3>
+      <p class="text-zinc-500 text-[10px]">
+        Gestione la lista de cortes, afeitados y masajes faciales ofrecidos.
+      </p>
+    </div>
+    <button
+      class="bg-gold text-black font-bold px-3 py-1.5 rounded hover:bg-gold-hover transition"
+      (click)="openCreateForm()"
+    >
+      Nuevo Servicio
+    </button>
+  </div>
+
+  <div class="mb-4">
+    <input
+      type="text"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+      placeholder="Buscar por nombre o descripción..."
+      class="w-full bg-[#161820] border border-white/10 text-white px-3 py-2 rounded outline-none focus:border-gold"
+    />
+  </div>
+
+  <div class="glass-effect rounded-lg overflow-x-auto border border-white/5 mb-6">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-white/5 text-zinc-400 uppercase text-[9px] border-b border-white/10">
+          <th class="p-2.5">ID</th>
+          <th class="p-2.5">Nombre Servicio</th>
+          <th class="p-2.5">Descripción</th>
+          <th class="p-2.5">Precio</th>
+          <th class="p-2.5">Duración</th>
+          <th class="p-2.5">Perfil Cliente</th>
+          <th class="p-2.5 text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (s of getServicesList(); track s.id) {
+          <tr class="border-b border-white/5 hover:bg-white/1 transition">
+            <td class="p-2.5 font-bold text-zinc-500">#{{ s.id }}</td>
+            <td class="p-2.5 font-bold text-white">{{ s.nombre }}</td>
+            <td class="p-2.5 text-zinc-400 max-w-[200px] truncate">{{ s.descripcion }}</td>
+            <td class="p-2.5 text-gold font-extrabold">S/ {{ s.precio.toFixed(2) }}</td>
+            <td class="p-2.5 text-zinc-300">{{ s.duracion_minutos }} min</td>
+            <td class="p-2.5 text-zinc-300">{{ s.perfil_cliente }}</td>
+            <td class="p-2.5 text-right flex justify-end gap-1.5">
+              <button
+                class="bg-white/5 hover:bg-white/10 text-white px-2 py-1 rounded transition"
+                (click)="openEditForm(s)"
+              >
+                <i class="fa-solid fa-pen text-[10px]"></i>
+              </button>
+              <button
+                class="bg-red-950/20 hover:bg-red-900/40 text-red-300 px-2 py-1 rounded border border-red-700/20 transition"
+                (click)="deleteService(s.id)"
+              >
+                <i class="fa-solid fa-trash text-[10px]"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (editingService()) {
+    <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-[11000] p-4">
+      <div
+        class="glass-effect rounded-xl p-5 max-w-[400px] w-full border border-white/10 shadow-2xl animate-fade-up"
+      >
+        <span class="font-bold text-gold uppercase block mb-4"
+          >{{ editingService()?.id ? 'Editar' : 'Registrar' }} Servicio</span
+        >
+        <form (submit)="saveService()">
+          <div class="mb-3">
+            <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Servicio</label>
+            <input
+              type="text"
+              name="fn"
+              [ngModel]="formNombre()"
+              (ngModelChange)="formNombre.set($event)"
+              class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="block text-[10px] text-zinc-400 mb-1">Descripción</label>
+            <textarea
+              name="fd"
+              [ngModel]="formDescripcion()"
+              (ngModelChange)="formDescripcion.set($event)"
+              rows="2"
+              class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none text-xs resize-none"
+              required
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="block text-[10px] text-zinc-400 mb-1">Precio de Venta (S/)</label>
+            <input
+              type="number"
+              name="fp"
+              [ngModel]="formPrecio()"
+              (ngModelChange)="formPrecio.set($event)"
+              class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="block text-[10px] text-zinc-400 mb-1">Duración Estimada (Minutos)</label>
+            <input
+              type="number"
+              name="fdu"
+              [ngModel]="formDuracion()"
+              (ngModelChange)="formDuracion.set($event)"
+              class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-[10px] text-zinc-400 mb-1">Perfil del Cliente</label>
+            <input
+              type="text"
+              name="fpe"
+              [ngModel]="formPerfil()"
+              (ngModelChange)="formPerfil.set($event)"
+              class="w-full bg-[#0a0b0e] border border-white/10 text-white p-2 rounded outline-none"
+              placeholder="Ej. Caballeros, Barba..."
+              required
+            />
+          </div>
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              class="border border-white/15 px-3 py-1.5 rounded"
+              (click)="editingService.set(null)"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="bg-gold text-black font-bold px-4 py-1.5 rounded hover:bg-gold-hover"
+            >
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>
